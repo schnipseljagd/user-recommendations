@@ -1,16 +1,32 @@
 'use strict';
 
-module.exports.hello = (event, context, callback) => {
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'Go Serverless v1.0! Your function executed successfully!',
-      input: event,
-    }),
-  };
+const usersCreate = require('./libs/users/create.js');
+const usersReadAll = require('./libs/users/read-all.js');
 
-  callback(null, response);
+module.exports.usersCreate = (event, context, callback) => {
+  usersCreate(event, (error, result) => {
+    const response = {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin" : "*"
+      },
+      body: JSON.stringify(result),
+    };
 
-  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-  // callback(null, { message: 'Go Serverless v1.0! Your function executed successfully!', event });
+    context.succeed(response);
+  });
+};
+
+module.exports.usersReadAll = (event, context, callback) => {
+  usersReadAll(event, (error, result) => {
+    const response = {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin" : "*"
+      },
+      body: JSON.stringify(result),
+    };
+
+    context.succeed(response);
+  });
 };
