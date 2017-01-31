@@ -6,6 +6,7 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 module.exports = (event, callback) => {
   const params = {
     TableName: 'users',
+    Limit: 10
   };
 
   return dynamoDb.scan(params, (error, data) => {
