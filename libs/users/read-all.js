@@ -12,6 +12,11 @@ module.exports = (event, callback) => {
     if (error) {
       callback(error);
     }
-    callback(error, data.Items);
+    console.log("data: ", data)
+    var items = []
+    if (data) {
+      items = data.Items;
+    }
+    callback(error, items);
   });
 };
