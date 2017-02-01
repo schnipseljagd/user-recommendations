@@ -33,6 +33,34 @@ functions:
           path: users
           method: get
           cors: true
+  placesCreate:
+    handler: handler.placesCreate
+    events:
+      - http:
+          path: places
+          method: post
+          cors: true
+  placesReadAll:
+    handler: handler.placesReadAll
+    events:
+      - http:
+          path: places
+          method: get
+          cors: true
+  recommendationsCreate:
+    handler: handler.recommendationsCreate
+    events:
+      - http:
+          path: recommendations
+          method: post
+          cors: true
+  recommendationsReadOneByUserId:
+    handler: handler.recommendationsReadOneByUserId
+    events:
+      - http:
+          path: recommendations/{userId}
+          method: get
+          cors: true
 
 resources:
   Resources:
@@ -52,3 +80,47 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: 'users'
+    PlacesDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: id
+            AttributeType: S
+          -
+            AttributeName: createdBy
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: id
+            KeyType: HASH
+          -
+            AttributeName: createdBy
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: 'places'
+    RecommendationsDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: userId
+            AttributeType: S
+          -
+            AttributeName: placesId
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: userId
+            KeyType: HASH
+          -
+            AttributeName: placesId
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: 'recommendations'
