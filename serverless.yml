@@ -111,14 +111,14 @@ resources:
             AttributeName: userId
             AttributeType: S
           -
-            AttributeName: placesId
+            AttributeName: placeId
             AttributeType: S
         KeySchema:
           -
             AttributeName: userId
             KeyType: HASH
           -
-            AttributeName: placesId
+            AttributeName: placeId
             KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 5

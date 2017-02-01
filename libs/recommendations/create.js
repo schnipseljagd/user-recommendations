@@ -5,7 +5,7 @@ module.exports = (event, callback) => {
   const body = JSON.parse(event.body);
   const data = {};
   data.userId = body.userId;
-  data.placesId = body.placesId;
+  data.placeId = body.placeId;
   data.updatedAt = new Date().getTime();
 
   const params = {
