@@ -21,7 +21,15 @@ const readAllPlaces = (title) => {
   return chakram.get(buildUri('places'));
 };
 
-describe("/users resource", () => {
+const createRecommendation = (userId, placeId) => {
+  return chakram.post(buildUri('recommendations'), {"userId": userId, "placeId": placeId});
+};
+
+const getRecommendationsByUserId = (userId) => {
+  return chakram.get(buildUri('recommendations/' + userId));
+};
+
+describe("users resource", () => {
   it("should create a new user", () => {
     return createUser('foobar')
       .then(response => readAllUser())
@@ -42,7 +50,7 @@ describe("/users resource", () => {
   });
 })
 
-describe("/places resource", () => {
+describe("places resource", () => {
   it("should create a new place", () => {
     return createUser('foobar')
       .then(response => createPlace(response.body.id, 'foo restaurant'))
@@ -61,6 +69,27 @@ describe("/places resource", () => {
         expect(response).to.have.status(200);
         expect(body.title).to.be.eq('foo restaurant');
         expect(body.id).to.not.be.empty;
+        expect(body.createdBy).to.not.be.empty;
       });
+  });
+})
+
+describe("recommendations resource", () => {
+  it("should create a recommendation by a user", function () {
+    this.timeout(10000);
+    return createUser('foobar')
+      .then(response => createPlace(response.body.id, 'foo restaurant'))
+      .then(response => createRecommendation(response.body.createdBy, response.body.id))
+      .then(response => getRecommendationsByUserId(response.userId))
+      .then(response => {
+        body = response.body;
+        expect(body).to.have.lengthOf(1);
+        expect(body[0].userId).to.not.be.empty;
+        expect(body[0].placeId).to.not.be.empty;
+        expect(response).to.have.status(200);
+      });
+  });
+
+  it.skip("should recommend a place created by another user", () => {
   });
 })
