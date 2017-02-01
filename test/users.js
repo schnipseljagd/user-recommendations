@@ -25,7 +25,7 @@ const createRecommendation = (userId, placeId) => {
   return chakram.post(buildUri('recommendations'), {"userId": userId, "placeId": placeId});
 };
 
-const getRecommendationsByUserId = (userId) => {
+const readRecommendationsByUserId = (userId) => {
   return chakram.get(buildUri('recommendations/' + userId));
 };
 
@@ -80,7 +80,7 @@ describe("recommendations resource", () => {
     return createUser('foobar')
       .then(response => createPlace(response.body.id, 'foo restaurant'))
       .then(response => createRecommendation(response.body.createdBy, response.body.id))
-      .then(response => getRecommendationsByUserId(response.body.userId))
+      .then(response => readRecommendationsByUserId(response.body.userId))
       .then(response => {
         body = response.body;
         expect(body).to.have.lengthOf(1);
