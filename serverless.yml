@@ -54,8 +54,8 @@ functions:
           path: recommendations
           method: post
           cors: true
-  recommendationsReadOneByUserId:
-    handler: handler.recommendationsReadOneByUserId
+  recommendationsReadByUserId:
+    handler: handler.recommendationsReadByUserId
     events:
       - http:
           path: recommendations/{userId}
