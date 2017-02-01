@@ -77,8 +77,8 @@ resources:
             AttributeName: id
             KeyType: HASH
         ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
         TableName: 'users'
     PlacesDynamoDbTable:
       Type: 'AWS::DynamoDB::Table'
@@ -99,8 +99,8 @@ resources:
             AttributeName: createdBy
             KeyType: RANGE
         ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
         TableName: 'places'
     RecommendationsDynamoDbTable:
       Type: 'AWS::DynamoDB::Table'
@@ -121,6 +121,6 @@ resources:
             AttributeName: placesId
             KeyType: RANGE
         ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
         TableName: 'recommendations'
