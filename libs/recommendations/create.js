@@ -3,9 +3,9 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 module.exports = (event, callback) => {
   const body = JSON.parse(event.body);
-  const data = {}
-  data.userId = body.userId
-  data.placesId = body.placesId
+  const data = {};
+  data.userId = body.userId;
+  data.placesId = body.placesId;
   data.updatedAt = new Date().getTime();
 
   const params = {

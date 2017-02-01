@@ -4,10 +4,10 @@ const uuid = require('uuid');
 
 module.exports = (event, callback) => {
   const body = JSON.parse(event.body);
-  const data = {}
+  const data = {};
   data.id = uuid.v1();
-  data.createdBy = body.userId
-  data.title = body.title
+  data.createdBy = body.userId;
+  data.title = body.title;
   data.updatedAt = new Date().getTime();
 
   const params = {
