@@ -4,7 +4,6 @@ const AWS = require('aws-sdk');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 module.exports = (event, callback) => {
-  console.log("pathParameters: ", event.pathParameters)
   const params = {
     TableName: 'recommendations',
     KeyConditionExpression: "#userId = :userId",
