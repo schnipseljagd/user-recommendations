@@ -80,7 +80,7 @@ describe("recommendations resource", () => {
     return createUser('foobar')
       .then(response => createPlace(response.body.id, 'foo restaurant'))
       .then(response => createRecommendation(response.body.createdBy, response.body.id))
-      .then(response => getRecommendationsByUserId(response.userId))
+      .then(response => getRecommendationsByUserId(response.body.userId))
       .then(response => {
         body = response.body;
         expect(body).to.have.lengthOf(1);
