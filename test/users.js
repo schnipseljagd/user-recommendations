@@ -2,7 +2,7 @@ var chakram = require('chakram'),
     expect = chakram.expect;
 
 const buildUri = (resource) => {
-  return "https://q5tpgkykzg.execute-api.us-east-1.amazonaws.com/dev/" + resource;
+  return "https://hg15e295u8.execute-api.eu-west-1.amazonaws.com/dev/" + resource;
 };
 
 const createUser = (name) => {

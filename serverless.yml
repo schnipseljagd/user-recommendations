@@ -5,7 +5,7 @@ provider:
   runtime: nodejs4.3
   memorySize: 128 # optional, default is 1024
   stage: dev
-  region: us-east-1
+  region: eu-west-1
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -16,7 +16,7 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:us-east-1:*:*"
+      Resource: "arn:aws:dynamodb:eu-west-1:*:*"
 
 functions:
   usersCreate:
