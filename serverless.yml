@@ -3,7 +3,7 @@ service: user-recommendations
 provider:
   name: aws
   runtime: nodejs4.3
-
+  memorySize: 128 # optional, default is 1024
   stage: dev
   region: us-east-1
   iamRoleStatements:
