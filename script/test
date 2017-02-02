@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -e
+
+export API_ENDPOINT=$(sls info -v | grep ServiceEndpoint | sed 's/ServiceEndpoint: //')
+
+mocha

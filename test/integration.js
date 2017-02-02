@@ -1,8 +1,16 @@
 var chakram = require('chakram'),
     expect = chakram.expect;
 
+var api_endpoint = process.env.API_ENDPOINT;
+
+const delay = (ms) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(resolve, ms);
+  });
+}
+
 const buildUri = (resource) => {
-  return "https://hg15e295u8.execute-api.eu-west-1.amazonaws.com/dev/" + resource;
+  return api_endpoint + "/" + resource;
 };
 
 const createUser = (name) => {
@@ -30,7 +38,7 @@ const readRecommendationsByUserId = (userId) => {
 };
 
 before(function() {
-    this.timeout(5000);
+  this.timeout(5000);
 })
 
 
