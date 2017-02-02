@@ -80,20 +80,44 @@ describe("places resource", () => {
 })
 
 describe("recommendations resource", () => {
-  it("should create a recommendation by a user", () => {
+  var aUser,
+  aPlace;
+
+  before("set up default user and a place", () => {
+    return createUser('some unkown user')
+      .then(response => aUser = response.body)
+      .then(response => createPlace(response.id, 'foo restaurant'))
+      .then(response => aPlace = response.body);
+  });
+
+  it("should create a recommendation to a place created by another user", () => {
     return createUser('foobar')
-      .then(response => createPlace(response.body.id, 'foo restaurant'))
-      .then(response => createRecommendation(response.body.createdBy, response.body.id))
+      .then(response => createRecommendation(aPlace.id, response.body.id))
       .then(response => readRecommendationsByUserId(response.body.userId))
       .then(response => {
         body = response.body;
+        expect(response).to.have.status(200);
         expect(body).to.have.lengthOf(1);
         expect(body[0].userId).to.not.be.empty;
-        expect(body[0].placeId).to.not.be.empty;
-        expect(response).to.have.status(200);
+        expect(body[0].placeId).to.be == aPlace.id;
       });
   });
 
-  it.skip("should recommend a place created by another user", () => {
+  it("should create a recommendation when a user creates a place", () => {
+    const checkRecommendations = () => {
+      return readRecommendationsByUserId(aUser.id)
+        .then(response => {
+          if (response.body.length === 0) {
+            console.log('response:' + JSON.stringify(response.body))
+              return delay(1000).then(() => checkRecommendations());
+          }
+          body = response.body;
+          expect(response).to.have.status(200);
+          expect(body).to.have.lengthOf(1);
+          expect(body[0].userId).to.be == aUser.id;
+          expect(body[0].placeId).to.be == aPlace.id;
+        });
+    };
+    return checkRecommendations();
   });
 })

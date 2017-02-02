@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -ex
+
+export PLACES_DYNAMODB_TABLE_STREAM_ARN=$(sls info -v | grep PlacesDymamoDbTableStreamArn | sed 's/PlacesDymamoDbTableStreamArn: //')
+
+sls deploy

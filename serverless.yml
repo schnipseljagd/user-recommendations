@@ -16,8 +16,18 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:eu-west-1:*:*"
-
+      Resource: "arn:aws:dynamodb:*:*:*"
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeStream
+        - dynamodb:GetRecords
+        - dynamodb:GetShardIterator
+        - dynamodb:ListStreams
+      Resource: "arn:aws:dynamodb:*:*:table/recommendations"
+    - Effect: Allow
+      Action:
+        - lambda:InvokeFunction
+      Resource: "arn:aws:lambda:*:*:*"
 functions:
   usersCreate:
     handler: handler.usersCreate
@@ -61,6 +71,11 @@ functions:
           path: recommendations/{userId}
           method: get
           cors: true
+  createRecommendationForCreatedPlace:
+    handler: handler.createRecommendationForCreatedPlace
+    events:
+      - stream:
+          arn: ${env:PLACES_DYNAMODB_TABLE_STREAM_ARN}
 
 resources:
   Resources:
@@ -102,6 +117,9 @@ resources:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5
         TableName: 'places'
+        StreamSpecification:
+          StreamViewType: NEW_IMAGE
+
     RecommendationsDynamoDbTable:
       Type: 'AWS::DynamoDB::Table'
       DeletionPolicy: Retain
@@ -118,3 +136,10 @@ resources:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5
         TableName: 'recommendations'
+  Outputs:
+    PlacesDymamoDbTableStreamArn:
+      Description: The PlacesDynamoDbTable StreamArn
+      Value:
+        'Fn::GetAtt': [ PlacesDynamoDbTable, StreamArn ]
+      Export:
+        Name: PlacesDynamoDbTableStreamArn

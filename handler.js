@@ -6,6 +6,7 @@ const placesCreate = require('./libs/places/create.js');
 const placesReadAll = require('./libs/places/read-all.js');
 const recommendationsCreate = require('./libs/recommendations/create.js');
 const recommendationsReadByUserId = require('./libs/recommendations/read-by-user-id.js');
+const createRecommendationForCreatedPlace = require('./libs/recommendations/create-recommendation-for-created-place.js');
 
 const responseHandler = (context) => {
   return (error, result) => {
@@ -42,4 +43,13 @@ module.exports.recommendationsCreate = (event, context, callback) => {
 };
 module.exports.recommendationsReadByUserId = (event, context, callback) => {
   recommendationsReadByUserId(event, responseHandler(context))
+};
+module.exports.createRecommendationForCreatedPlace = (event, context, callback) => {
+  createRecommendationForCreatedPlace(event, (error, result) => {
+    if (error) {
+      context.fail(error)
+    } else {
+      context.succeed(result);
+    }
+  });
 };
