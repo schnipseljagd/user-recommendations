@@ -1,0 +1,3 @@
+[ ] use ulid instead of uuid
+[x] automatically add recommendation for the user to the created place
+[ ] remove the dynamodb handling duplication
