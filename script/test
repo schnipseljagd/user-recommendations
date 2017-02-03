@@ -4,4 +4,4 @@ set -e
 
 export API_ENDPOINT=$(sls info -v | grep ServiceEndpoint | sed 's/ServiceEndpoint: //')
 
-mocha
+mocha --timeout=10000

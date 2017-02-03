@@ -37,11 +37,6 @@ const readRecommendationsByUserId = (userId) => {
   return chakram.get(buildUri('recommendations/' + userId));
 };
 
-before(function() {
-  this.timeout(5000);
-})
-
-
 describe("users resource", () => {
   it("should create a new user", () => {
     return createUser('foobar')
