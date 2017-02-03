@@ -1,3 +1,8 @@
-[ ] use ulid instead of uuid
+[ ] use ulid instead of uuid (integers, smaller sizes and sortable would probably be nice)
 [x] automatically add recommendation for the user to the created place
 [ ] remove the dynamodb handling duplication
+[x] check how to replay place events
+	-> events are kept for 24h in this time, you could just deploy a "replay function" and set trim horizon
+[x] check how to migrate tables
+[x] check how createRecommendationForCreatedPlace failures are handled
+	-> it retries until it is successful (https://docs.aws.amazon.com/lambda/latest/dg/retries-on-errors.html)
