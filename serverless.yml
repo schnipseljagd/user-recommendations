@@ -114,6 +114,7 @@ resources:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5
         TableName: ${self:provider.users_table}
+
     PlacesDynamoDbTable:
       Type: 'AWS::DynamoDB::Table'
       DeletionPolicy: Retain
@@ -155,6 +156,7 @@ resources:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5
         TableName: ${self:provider.recommendations_table}
+
   Outputs:
     PlacesDymamoDbTableStreamArn:
       Description: The PlacesDynamoDbTable StreamArn
