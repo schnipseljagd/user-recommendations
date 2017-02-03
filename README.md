@@ -25,4 +25,5 @@ index cc550af..18d847a 100644
 
 ## Tests
 Runs integration tests against the dev stage.
+
     ./script/test
