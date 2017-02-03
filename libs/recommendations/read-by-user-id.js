@@ -3,9 +3,11 @@
 const AWS = require('aws-sdk');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
+var recommendations_table = process.env.RECOMMENDATIONS_TABLE;
+
 module.exports = (event, callback) => {
   const params = {
-    TableName: 'recommendations',
+    TableName: recommendations_table,
     KeyConditionExpression: "#userId = :userId",
     ExpressionAttributeNames: {
       "#userId": "userId"

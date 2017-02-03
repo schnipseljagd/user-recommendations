@@ -2,6 +2,8 @@ const AWS = require('aws-sdk');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 const uuid = require('uuid');
 
+var users_table = process.env.USERS_TABLE;
+
 module.exports = (event, callback) => {
   const body = JSON.parse(event.body);
   const data = {};
@@ -10,7 +12,7 @@ module.exports = (event, callback) => {
   data.updatedAt = new Date().getTime();
 
   const params = {
-    TableName: 'users',
+    TableName: users_table,
     Item: data
   };
 

@@ -1,6 +1,8 @@
 const AWS = require('aws-sdk');
 const lambda = new AWS.Lambda();
 
+var recommendations_create_function = process.env.RECOMMENDATIONS_CREATE_FUNCTION;
+
 module.exports = (event, callback) => {
   event.Records.forEach(record => {
     newImage = record.dynamodb.NewImage;
@@ -10,7 +12,7 @@ module.exports = (event, callback) => {
     };
 
     var params = {
-      FunctionName: "user-recommendations-dev-recommendationsCreate",
+      FunctionName: recommendations_create_function,
       Payload: JSON.stringify({'body': JSON.stringify(payload)})
     };
 

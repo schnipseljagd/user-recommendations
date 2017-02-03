@@ -3,9 +3,11 @@
 const AWS = require('aws-sdk');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
+var users_table = process.env.USERS_TABLE;
+
 module.exports = (event, callback) => {
   const params = {
-    TableName: 'users',
+    TableName: users_table,
     Limit: 10
   };
 

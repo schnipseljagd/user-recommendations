@@ -1,6 +1,8 @@
 const AWS = require('aws-sdk');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
+var recommendations_table = process.env.RECOMMENDATIONS_TABLE;
+
 module.exports = (event, callback) => {
   const body = JSON.parse(event.body);
   const data = {};
@@ -9,7 +11,7 @@ module.exports = (event, callback) => {
   data.updatedAt = new Date().getTime();
 
   const params = {
-    TableName: 'recommendations',
+    TableName: recommendations_table,
     Item: data
   };
 

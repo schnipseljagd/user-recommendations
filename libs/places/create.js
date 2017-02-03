@@ -2,6 +2,8 @@ const AWS = require('aws-sdk');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 const uuid = require('uuid');
 
+var places_table = process.env.PLACES_TABLE;
+
 module.exports = (event, callback) => {
   const body = JSON.parse(event.body);
   const data = {};
@@ -11,7 +13,7 @@ module.exports = (event, callback) => {
   data.updatedAt = new Date().getTime();
 
   const params = {
-    TableName: 'places',
+    TableName: places_table,
     Item: data
   };
 

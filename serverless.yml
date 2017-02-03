@@ -6,6 +6,10 @@ provider:
   memorySize: 128 # optional, default is 1024
   stage: dev
   region: eu-west-1
+  users_table: '${self:service}-${opt:stage, self:provider.stage}-users'
+  places_table: '${self:service}-${opt:stage, self:provider.stage}-places'
+  recommendations_table: '${self:service}-${opt:stage, self:provider.stage}-recommendations'
+  recommendations_create_function: '${self:service}-${opt:stage, self:provider.stage}-recommendationsCreate'
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -23,14 +27,17 @@ provider:
         - dynamodb:GetRecords
         - dynamodb:GetShardIterator
         - dynamodb:ListStreams
-      Resource: "arn:aws:dynamodb:*:*:table/recommendations"
+      Resource: "arn:aws:dynamodb:*:*:table/${self:service}-*"
     - Effect: Allow
       Action:
         - lambda:InvokeFunction
       Resource: "arn:aws:lambda:*:*:*"
+
 functions:
   usersCreate:
     handler: handler.usersCreate
+    environment:
+      USERS_TABLE: ${self:provider.users_table}
     events:
       - http:
           path: users
@@ -38,6 +45,8 @@ functions:
           cors: true
   usersReadAll:
     handler: handler.usersReadAll
+    environment:
+      USERS_TABLE: ${self:provider.users_table}
     events:
       - http:
           path: users
@@ -45,6 +54,8 @@ functions:
           cors: true
   placesCreate:
     handler: handler.placesCreate
+    environment:
+      PLACES_TABLE: ${self:provider.places_table}
     events:
       - http:
           path: places
@@ -52,6 +63,8 @@ functions:
           cors: true
   placesReadAll:
     handler: handler.placesReadAll
+    environment:
+      PLACES_TABLE: ${self:provider.places_table}
     events:
       - http:
           path: places
@@ -59,6 +72,8 @@ functions:
           cors: true
   recommendationsCreate:
     handler: handler.recommendationsCreate
+    environment:
+      RECOMMENDATIONS_TABLE: ${self:provider.recommendations_table}
     events:
       - http:
           path: recommendations
@@ -66,6 +81,8 @@ functions:
           cors: true
   recommendationsReadByUserId:
     handler: handler.recommendationsReadByUserId
+    environment:
+      RECOMMENDATIONS_TABLE: ${self:provider.recommendations_table}
     events:
       - http:
           path: recommendations/{userId}
@@ -73,6 +90,8 @@ functions:
           cors: true
   createRecommendationForCreatedPlace:
     handler: handler.createRecommendationForCreatedPlace
+    environment:
+      RECOMMENDATIONS_CREATE_FUNCTION: ${self:provider.recommendations_create_function}
     events:
       - stream:
           arn: ${env:PLACES_DYNAMODB_TABLE_STREAM_ARN}
@@ -94,7 +113,7 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5
-        TableName: 'users'
+        TableName: ${self:provider.users_table}
     PlacesDynamoDbTable:
       Type: 'AWS::DynamoDB::Table'
       DeletionPolicy: Retain
@@ -116,7 +135,7 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5
-        TableName: 'places'
+        TableName: ${self:provider.places_table}
         StreamSpecification:
           StreamViewType: NEW_IMAGE
 
@@ -135,7 +154,7 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5
-        TableName: 'recommendations'
+        TableName: ${self:provider.recommendations_table}
   Outputs:
     PlacesDymamoDbTableStreamArn:
       Description: The PlacesDynamoDbTable StreamArn
